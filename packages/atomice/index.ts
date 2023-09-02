@@ -63,7 +63,7 @@ export function atomWithStorage<T>(
 
   at.Render = staticComponent(({ children }) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    useBeforeRender(at);
+    useRerender(at);
     if (!children) {
       return at.value as ReactNode;
     }
@@ -152,16 +152,16 @@ export function atom<T>(defaultValue: T, options?: AtomOptions) {
 
 const EMPTY_ARRAY: any[] = [];
 
-function useBeforeRender<T>(at: PrivateAtom<T>) {
+export function useRerender<T>(at: Atom<T>) {
   const [state, setState] = useState(at.value);
   useMemo(() => {
-    at.events.add(setState);
+    (at as PrivateAtom<T>).events.add(setState);
   }, []);
   useEffect(() => {
-    at.events.add(setState);
+    (at as PrivateAtom<T>).events.add(setState);
     at.loadStorage();
     return () => {
-      at.events.delete(setState);
+      (at as PrivateAtom<T>).events.delete(setState);
     };
   }, EMPTY_ARRAY);
 

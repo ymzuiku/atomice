@@ -20,6 +20,7 @@ export declare function atomWithStorage<T>(storageKey: string, defaultValue: T, 
     loadStorage?: (key: string) => Promise<T>;
 }): Atom<T>;
 export declare function atom<T>(defaultValue: T, options?: AtomOptions): Atom<T>;
+export declare function useRerender<T>(at: Atom<T>): readonly [T, import("react").Dispatch<import("react").SetStateAction<T>>];
 export declare function onStorageLoaded(fn: () => void): void;
 export declare function Block({ children }: {
     children: ReactNode;

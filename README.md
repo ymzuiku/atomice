@@ -180,6 +180,49 @@ export default App;
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
 
+### useRereder
+
+Sometimes we need to escape precise updates, use `useRerender`:
+
+```tsx
+import { staticComponent, atom, Atom } from "atomice";
+
+function App() {
+  console.log("onle-render-once");
+
+  const name = atom("");
+  return (
+    <div>
+      <h1>My React App</h1>
+      <input
+        value={name.value}
+        onChange={(e) => name.setValue(e.target.value)}
+      />
+      <Text name={name} />
+    </div>
+  );
+}
+
+const Text = ({ name }: { name: Atom<string> }) => {
+  console.log("render-every-changed");
+  useRerender(name);
+  return <p>Your input text: {name.value}</p>;
+};
+
+// Success, It's work!
+const Text = staticComponent(({ name }: { name: Atom<string> }) => {
+  console.log("onle-render-once");
+
+  return (
+    <p>
+      Your input text: <name.Render />
+    </p>
+  );
+});
+
+export default staticComponent(App);
+```
+
 ### LocalStorage atom
 
 Use `atomWithStorage` can auto load and save data to localStorage:

@@ -1,11 +1,11 @@
-import { useRef as v, memo as S, useState as g, useMemo as m, useEffect as R } from "react";
+import { useState as v, useMemo as S, useEffect as g, useRef as m, memo as R } from "react";
 const f = typeof window > "u";
 let u = !1;
-function h(e, n, s = {}) {
-  const l = [], i = [], c = JSON.stringify({ v: n });
+function h(e, o, s = {}) {
+  const l = [], i = [], c = JSON.stringify({ v: o });
   let d = !1;
   const t = {
-    value: n,
+    value: o,
     events: /* @__PURE__ */ new Set([]),
     setValue: () => {
     },
@@ -18,26 +18,26 @@ function h(e, n, s = {}) {
     addBefore: (r) => {
       l.push(r);
     },
-    Render: ({ children: r }) => r(n)
+    Render: ({ children: r }) => r(o)
   };
-  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = V(({ children: r }) => (B(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
+  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = w(({ children: r }) => (V(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
     if (typeof r == "function" && (r = r(t.value)), r !== t.value) {
       t.value = r;
-      for (const o of l)
-        await Promise.resolve(o());
+      for (const n of l)
+        await Promise.resolve(n());
       if (setTimeout(() => {
-        t.events.forEach((o) => {
-          o(t.value);
+        t.events.forEach((n) => {
+          n(t.value);
         });
       }), !f && e)
         if (s.saveStorage)
           s.saveStorage(t.value);
         else {
-          const o = s.storage === "sessionStorage" ? sessionStorage : localStorage, a = JSON.stringify({ v: t.value });
-          t.value === "" || t.value === null || t.value === void 0 || a === c ? o.removeItem(e) : o.setItem(e, a);
+          const n = s.storage === "sessionStorage" ? sessionStorage : localStorage, a = JSON.stringify({ v: t.value });
+          t.value === "" || t.value === null || t.value === void 0 || a === c ? n.removeItem(e) : n.setItem(e, a);
         }
-      for (const o of i)
-        o();
+      for (const n of i)
+        n();
     }
   }, e && (t.loadStorage = () => {
     if (!(!e || f || d))
@@ -46,50 +46,51 @@ function h(e, n, s = {}) {
           t.setValue(r);
         });
       else {
-        const o = (s.storage === "sessionStorage" ? sessionStorage : localStorage).getItem(e);
-        if (typeof o == "string")
+        const n = (s.storage === "sessionStorage" ? sessionStorage : localStorage).getItem(e);
+        if (typeof n == "string")
           try {
-            const a = JSON.parse(o).v;
+            const a = JSON.parse(n).v;
             t.setValue(a);
           } catch {
           }
       }
   }, u && t.loadStorage()), t;
 }
-function J(e, n) {
-  return h("", e, n);
+function J(e, o) {
+  return h("", e, o);
 }
 const A = [];
-function B(e) {
-  const [n, s] = g(e.value);
-  return m(() => {
+function V(e) {
+  const [o, s] = v(e.value);
+  return S(() => {
     e.events.add(s);
-  }, []), R(() => (e.events.add(s), e.loadStorage(), () => {
+  }, []), g(() => (e.events.add(s), e.loadStorage(), () => {
     e.events.delete(s);
-  }), A), [n, e.setValue];
+  }), A), [o, e.setValue];
 }
 function N(e) {
-  const n = () => {
+  const o = () => {
     if (!f) {
       if (!u) {
-        setTimeout(n);
+        setTimeout(o);
         return;
       }
       e();
     }
   };
-  n();
+  o();
 }
 function O({ children: e }) {
-  return v(e).current;
+  return m(e).current;
 }
-function V(e) {
-  return S(e, () => !1);
+function w(e) {
+  return R(e, () => !1);
 }
 export {
   O as Block,
   J as atom,
   h as atomWithStorage,
   N as onStorageLoaded,
-  V as staticComponent
+  w as staticComponent,
+  V as useRerender
 };

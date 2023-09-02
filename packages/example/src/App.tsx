@@ -1,4 +1,11 @@
-import { Atom, Block, atom, atomWithStorage, staticComponent } from "atomice";
+import {
+  Atom,
+  Block,
+  atom,
+  atomWithStorage,
+  staticComponent,
+  useRerender,
+} from "atomice";
 import { ChangeEventHandler } from "react";
 
 const name = atomWithStorage("local-state2", "");
@@ -6,6 +13,11 @@ const name = atomWithStorage("local-state2", "");
 const getData = async (name: string) => {
   await new Promise((res) => setTimeout(res, 100));
   return { name: name + "b" };
+};
+
+const Text = ({ text }: { text: Atom<string> }) => {
+  useRerender(text);
+  return <div>text: {text.value}</div>;
 };
 
 const Page = staticComponent(() => {
@@ -37,6 +49,7 @@ const Page = staticComponent(() => {
       </title.Render>
       <div>
         <title.Render />
+        <Text text={title} />
       </div>
     </div>
   );
