@@ -1,6 +1,6 @@
 import { useState as S, useMemo as v, useEffect as g, useRef as m, memo as R } from "react";
-const u = typeof window > "u";
-let f = !1;
+const f = typeof window > "u";
+let u = !1;
 function h(e, o, s = {}) {
   const l = [], i = [], c = JSON.stringify({ v: o });
   let d = !1;
@@ -29,7 +29,7 @@ function h(e, o, s = {}) {
         t.events.forEach((n) => {
           n(t.value);
         });
-      }), !u && e)
+      }), !f && e)
         if (s.saveStorage)
           s.saveStorage(t.value);
         else {
@@ -40,8 +40,8 @@ function h(e, o, s = {}) {
         n();
     }
   }, e && (t.loadStorage = () => {
-    if (!(!e || u || d))
-      if (f = !0, d = !0, s.loadStorage)
+    if (!(!e || f || d))
+      if (u = !0, d = !0, s.loadStorage)
         s.loadStorage(e).then((r) => {
           t.setValue(r);
         });
@@ -54,7 +54,7 @@ function h(e, o, s = {}) {
           } catch {
           }
       }
-  }, e && (f ? t.loadStorage() : setTimeout(() => {
+  }, e && (u ? t.loadStorage() : setTimeout(() => {
     t.loadStorage();
   }, 500))), t;
 }
@@ -72,8 +72,8 @@ function T(e) {
 }
 function J(e) {
   const o = () => {
-    if (!u) {
-      if (!f) {
+    if (!f) {
+      if (!u) {
         setTimeout(o);
         return;
       }
@@ -89,8 +89,10 @@ function V(e) {
   return R(e, () => !1);
 }
 function O(e) {
+  if (f)
+    return;
   const o = () => {
-    f ? e() : setTimeout(o, 50);
+    u ? e() : setTimeout(o, 50);
   };
   o();
 }

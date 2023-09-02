@@ -197,6 +197,9 @@ export function staticComponent<T>(fn: T): T {
 }
 
 export function onMount(fn: () => void) {
+  if (isSSR) {
+    return;
+  }
   const checker = () => {
     if (rended) {
       fn();

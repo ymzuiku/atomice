@@ -257,7 +257,16 @@ import { atomWithStorage } from "atomice";
 // global atom
 const name = atomWithStorage("local-key", "");
 
+// You can execute outside the component
+onMount(() => {
+  cnosole.log(name.value);
+});
+
+// You can execute outside the component
+name.setValue("other-value");
+
 function App() {
+  // It's ok
   onMount(() => {
     cnosole.log(name.value);
   });
