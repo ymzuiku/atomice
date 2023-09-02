@@ -1,14 +1,16 @@
 # Atomice
 
-atomice 是一个轻量级的 React 工具，旨在移除所有 react hooks 的使用，使用存粹的 render props + atom 的状态管理方法管理你整个应用的更新。通过 atomice 的实践，你只会更新你所需要的部分。
+Atomice 的特点是定义了一套基于 Render Props 的解决方案，以避免 Hooks 影响整个组件的渲染。Render Props 是基于 JSX 的特性，具有出色的稳定性和可靠性。
+
+这个方案的本质是牺牲部分可读性，换来更少的副作用
 
 ## 主要特点
 
-- 纯粹的: 一切都建立在 React 自带的 API 上。
-- 零依赖: 不引入任何额外的依赖项或库，确保您的项目保持简单和轻量级。
-- 灵活性: 你可以可选的让部分组件使用 atomice，而另外一部分组件沿用 react API。
+- **Render Props 方案**: Atomice 基于 Render Props 提供了一种不同的状态管理方法，使您能够更精确地控制组件的渲染。通过 Render Props，您可以选择性地将状态传递给组件，而不必担心整个组件的重新渲染。
 
-开放式生态系统: 我们鼓励社区参与和贡献，使 Atomice 的功能不断扩展，同时保持可维护性和可扩展性。
+- **避免 Hooks 影响**: Atomice 的设计目标是防止 Hooks 对整个组件的渲染产生影响。使用 Atomice，您可以更灵活地管理组件的状态和行为，而不会被强制性地影响整个组件树。
+
+- **稳定性**: Render Props 是 React 中的一项稳定特性，已经在许多项目中广泛使用并经受了时间的考验。Atomice 利用这一稳定性，为您提供可信赖的状态管理方法。
 
 ## 适用场景
 
@@ -27,21 +29,97 @@ pnpm i benefits
 
 ## Example
 
+### create atom
+
 ```jsx
-import React from "react";
 import { atom } from "atomice";
 
+// global atom
 const name = atom("");
 
 function App() {
+  const handleChange = (e) => name.setValue(e.target.value);
   return (
     <div>
       <h1>My React App</h1>
-      <input onChange={(e) => name.setValue(e.target.value)} />
-      your input text: <atom.Render />
+      <input onChange={handleChange} />
+      your input text: <name.Render />
     </div>
   );
 }
 
 export default App;
 ```
+
+### like useState atom
+
+Use `staticComponent` that are never repainted by their parent：
+
+```jsx
+import { atom, staticComponent } from "atomice";
+
+const app = staticComponent(() => {
+  console.log("onle-render-once");
+
+  const name = atom("");
+  const handleChange = (e) => name.setValue(e.target.value);
+
+  return (
+    <div>
+      <h1>My React App</h1>
+      <input onChange={handleChange} />
+      your input text: <name.Render />
+    </div>
+  );
+});
+
+export default App;
+```
+
+> Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
+
+### Use render props and Block
+
+```jsx
+import { atom, staticComponent, Block } from "atomice";
+
+const app = staticComponent(() => {
+  console.log("onle-render-once");
+
+  const name = atom({ name: "hello", age: 30 });
+  const handleChangeName = (e) =>
+    name.setValue((v) => ({ ...v, name: e.target.value }));
+  const handleChangeAge = () =>
+    name.setValue((v) => ({ ...v, age: v.age + 1 }));
+
+  return (
+    <div>
+      <h1>My React App</h1>
+      <name.Render>
+        {(v) => {
+          return (
+            <div>
+              <h2>Name: {v.name}</h2>
+              <h3>Age: {v.age}</h3>
+              {/* Use <Block>...</Block>, Will not be affected by name-atom re-render */}
+              <Block>
+                <OtherComponent />
+              </Block>
+            </div>
+          );
+        }}
+      </name.Render>
+      <name.Render>
+        {(v) => {
+          return <input value={v.name} onChange={handleChangeName} />;
+        }}
+      </name.Render>
+      <button onClick={handleAddAge}>Add age</button>
+    </div>
+  );
+});
+
+export default App;
+```
+
+> Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
