@@ -1,43 +1,43 @@
-import { useRef as S, memo as g, useMemo as v, useState as m, useEffect as R } from "react";
+import { useRef as v, memo as S, useState as g, useMemo as m, useEffect as R } from "react";
 const f = typeof window > "u";
 let u = !1;
-function B(e, o, s = {}) {
-  const l = [], c = [], i = JSON.stringify({ v: o });
+function h(e, n, s = {}) {
+  const l = [], i = [], c = JSON.stringify({ v: n });
   let d = !1;
   const t = {
-    value: o,
+    value: n,
     events: /* @__PURE__ */ new Set([]),
     setValue: () => {
     },
     loadStorage: async () => {
     },
-    getDefaultValue: () => JSON.parse(i).v,
+    getDefaultValue: () => JSON.parse(c).v,
     addAfter: (r) => {
-      c.push(r);
+      i.push(r);
     },
     addBefore: (r) => {
       l.push(r);
     },
-    Render: ({ children: r }) => r(o)
+    Render: ({ children: r }) => r(n)
   };
-  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = V(({ children: r }) => (A(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
+  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = V(({ children: r }) => (B(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
     if (typeof r == "function" && (r = r(t.value)), r !== t.value) {
       t.value = r;
-      for (const n of l)
-        await Promise.resolve(n());
+      for (const o of l)
+        await Promise.resolve(o());
       if (setTimeout(() => {
-        t.events.forEach((n) => {
-          n(t.value);
+        t.events.forEach((o) => {
+          o(t.value);
         });
       }), !f && e)
         if (s.saveStorage)
           s.saveStorage(t.value);
         else {
-          const n = s.storage === "sessionStorage" ? sessionStorage : localStorage, a = JSON.stringify({ v: t.value });
-          t.value === "" || t.value === null || t.value === void 0 || a === i ? n.removeItem(e) : n.setItem(e, a);
+          const o = s.storage === "sessionStorage" ? sessionStorage : localStorage, a = JSON.stringify({ v: t.value });
+          t.value === "" || t.value === null || t.value === void 0 || a === c ? o.removeItem(e) : o.setItem(e, a);
         }
-      for (const n of c)
-        n();
+      for (const o of i)
+        o();
     }
   }, e && (t.loadStorage = () => {
     if (!(!e || f || d))
@@ -46,54 +46,50 @@ function B(e, o, s = {}) {
           t.setValue(r);
         });
       else {
-        const n = (s.storage === "sessionStorage" ? sessionStorage : localStorage).getItem(e);
-        if (typeof n == "string")
+        const o = (s.storage === "sessionStorage" ? sessionStorage : localStorage).getItem(e);
+        if (typeof o == "string")
           try {
-            const a = JSON.parse(n).v;
+            const a = JSON.parse(o).v;
             t.setValue(a);
           } catch {
           }
       }
   }, u && t.loadStorage()), t;
 }
-function J(e, o) {
-  return B("", e, o);
+function J(e, n) {
+  return h("", e, n);
 }
-const h = [];
-function A(e) {
-  const [o, s] = m(e.value);
-  return v(() => {
+const A = [];
+function B(e) {
+  const [n, s] = g(e.value);
+  return m(() => {
     e.events.add(s);
   }, []), R(() => (e.events.add(s), e.loadStorage(), () => {
     e.events.delete(s);
-  }), h), [o, e.setValue];
+  }), A), [n, e.setValue];
 }
 function N(e) {
-  const o = () => {
+  const n = () => {
     if (!f) {
       if (!u) {
-        setTimeout(o);
+        setTimeout(n);
         return;
       }
       e();
     }
   };
-  o();
+  n();
 }
 function O({ children: e }) {
-  return S(e).current;
+  return v(e).current;
 }
 function V(e) {
-  return g(e, () => !1);
-}
-function E(e) {
-  return v(e, []);
+  return S(e, () => !1);
 }
 export {
   O as Block,
   J as atom,
-  B as atomWithStorage,
+  h as atomWithStorage,
   N as onStorageLoaded,
-  V as staticComponent,
-  E as useBlock
+  V as staticComponent
 };

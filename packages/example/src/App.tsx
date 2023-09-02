@@ -1,11 +1,4 @@
-import {
-  Atom,
-  Block,
-  atom,
-  atomWithStorage,
-  staticComponent,
-  useBlock,
-} from "atomice";
+import { Atom, Block, atom, atomWithStorage, staticComponent } from "atomice";
 import { ChangeEventHandler } from "react";
 
 const name = atomWithStorage("local-state2", "");
@@ -50,25 +43,23 @@ const Page = staticComponent(() => {
 });
 
 const Input = staticComponent(({ title }: { title?: Atom<string> }) => {
-  return useBlock(() => {
-    return (
+  return (
+    <div>
+      the-input:
+      {title ? <title.Render /> : null}
+      <name.Render>
+        {() => (
+          <input
+            value={name.value}
+            onChange={(e) => name.setValue(e.target.value)}
+          />
+        )}
+      </name.Render>
       <div>
-        the-input:
-        {title ? <title.Render /> : null}
-        <name.Render>
-          {() => (
-            <input
-              value={name.value}
-              onChange={(e) => name.setValue(e.target.value)}
-            />
-          )}
-        </name.Render>
-        <div>
-          <name.Render />
-        </div>
+        <name.Render />
       </div>
-    );
-  });
+    </div>
+  );
 });
 
 export function App() {

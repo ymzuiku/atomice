@@ -80,6 +80,56 @@ export default App;
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
 
+### Use atom props
+
+Use `atomWithStorage` can auto load and save data to localStorage:
+
+Typescript example:
+
+```tsx
+import { staticComponent, atom, Atom } from "atomice";
+
+function App() {
+  console.log("onle-render-once");
+
+  const name = atom("");
+  return (
+    <div>
+      <h1>My React App</h1>
+      <Input name={name} />
+      <Text name={name} />
+      <ErrorText name={name.value} />
+    </div>
+  );
+}
+
+const Input = staticComponent(({ name }: { name: Atom<string> }) => {
+  console.log("onle-render-once");
+
+  return (
+    <input value={name.value} onChange={(e) => name.setValue(e.target.value)} />
+  );
+});
+
+// This component won't update because you're passing the value of name.value, which doesn't trigger updates. To trigger an update, you must wrap it in name.Render for rendering.
+const ErrorText = ({ name }: { name: string }) => {
+  return <p>Your input text: {name}</p>;
+};
+
+// Success, It's work!
+const Text = staticComponent(({ name }: { name: Atom<string> }) => {
+  console.log("onle-render-once");
+
+  return (
+    <p>
+      Your input text: <name.Render />
+    </p>
+  );
+});
+
+export default staticComponent(App);
+```
+
 ### Use render props and Block
 
 ```jsx
@@ -125,3 +175,27 @@ export default App;
 ```
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
+
+### LocalStorage atom
+
+Use `atomWithStorage` can auto load and save data to localStorage:
+
+```jsx
+import { atomWithStorage } from "atomice";
+
+// global atom
+const name = atomWithStorage("local-key", "");
+
+function App() {
+  const handleChange = (e) => name.setValue(e.target.value);
+  return (
+    <div>
+      <h1>My React App</h1>
+      <input onChange={handleChange} />
+      your input text: <name.Render />
+    </div>
+  );
+}
+
+export default App;
+```

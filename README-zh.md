@@ -17,15 +17,14 @@ Atomice 的特点是定义了一套基于 Render Props 的解决方案，以避�
 - 如果你向往 SolidJS 的渲染方式， 又不愿意离开 React 的生态， Atomice 可以在 React 的世界中给于你接近 SolidJS 的性能。
 - 如果你厌倦了反复的管理 hooks 的依赖， 厌倦了不小心错误使用 useEffect 导致的循环渲染， 你可以尝试 atomice 的方案
 
-## 安装
+## Installation
 
-```sh
+````sh
 npm install benefits
 # Or
 yarn add benefits
 # Or
 pnpm i benefits
-```
 
 ## Example
 
@@ -49,7 +48,7 @@ function App() {
 }
 
 export default App;
-```
+````
 
 ### like useState atom
 
@@ -77,6 +76,56 @@ export default App;
 ```
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
+
+### Use atom props
+
+Use `atomWithStorage` can auto load and save data to localStorage:
+
+Typescript example:
+
+```tsx
+import { staticComponent, atom, Atom } from "atomice";
+
+function App() {
+  console.log("onle-render-once");
+
+  const name = atom("");
+  return (
+    <div>
+      <h1>My React App</h1>
+      <Input name={name} />
+      <Text name={name} />
+      <ErrorText name={name.value} />
+    </div>
+  );
+}
+
+const Input = staticComponent(({ name }: { name: Atom<string> }) => {
+  console.log("onle-render-once");
+
+  return (
+    <input value={name.value} onChange={(e) => name.setValue(e.target.value)} />
+  );
+});
+
+// This component won't update because you're passing the value of name.value, which doesn't trigger updates. To trigger an update, you must wrap it in name.Render for rendering.
+const ErrorText = ({ name }: { name: string }) => {
+  return <p>Your input text: {name}</p>;
+};
+
+// Success, It's work!
+const Text = staticComponent(({ name }: { name: Atom<string> }) => {
+  console.log("onle-render-once");
+
+  return (
+    <p>
+      Your input text: <name.Render />
+    </p>
+  );
+});
+
+export default staticComponent(App);
+```
 
 ### Use render props and Block
 
@@ -123,3 +172,27 @@ export default App;
 ```
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
+
+### LocalStorage atom
+
+Use `atomWithStorage` can auto load and save data to localStorage:
+
+```jsx
+import { atomWithStorage } from "atomice";
+
+// global atom
+const name = atomWithStorage("local-key", "");
+
+function App() {
+  const handleChange = (e) => name.setValue(e.target.value);
+  return (
+    <div>
+      <h1>My React App</h1>
+      <input onChange={handleChange} />
+      your input text: <name.Render />
+    </div>
+  );
+}
+
+export default App;
+```

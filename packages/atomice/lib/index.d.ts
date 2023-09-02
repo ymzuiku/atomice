@@ -25,4 +25,3 @@ export declare function Block({ children }: {
     children: ReactNode;
 }): ReactNode;
 export declare function staticComponent<T>(fn: T): T;
-export declare function useBlock<T>(v: () => T): T;

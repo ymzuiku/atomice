@@ -189,7 +189,3 @@ export function Block({ children }: { children: ReactNode }) {
 export function staticComponent<T>(fn: T): T {
   return (memo as any)(fn, () => false);
 }
-
-export function useBlock<T>(v: () => T): T {
-  return useMemo(v, []);
-}
