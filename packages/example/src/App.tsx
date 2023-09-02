@@ -3,6 +3,7 @@ import {
   Block,
   atom,
   atomWithStorage,
+  onMount,
   staticComponent,
   useRerender,
 } from "atomice";
@@ -12,7 +13,7 @@ const name = atomWithStorage("local-state2", "");
 
 const getData = async (name: string) => {
   await new Promise((res) => setTimeout(res, 100));
-  return { name: name + "b" };
+  return { name: name + "-loaded" };
 };
 
 const Text = ({ text }: { text: Atom<string> }) => {
@@ -27,10 +28,10 @@ const Page = staticComponent(() => {
   };
 
   name.loadStorage();
-  (async () => {
+  onMount(async () => {
     const res = await getData(name.value);
     title.setValue(res.name);
-  })();
+  });
 
   return (
     <div>

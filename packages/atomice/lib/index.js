@@ -1,6 +1,6 @@
-import { useState as v, useMemo as S, useEffect as g, useRef as m, memo as R } from "react";
-const f = typeof window > "u";
-let u = !1;
+import { useState as S, useMemo as v, useEffect as g, useRef as m, memo as R } from "react";
+const u = typeof window > "u";
+let f = !1;
 function h(e, o, s = {}) {
   const l = [], i = [], c = JSON.stringify({ v: o });
   let d = !1;
@@ -20,7 +20,7 @@ function h(e, o, s = {}) {
     },
     Render: ({ children: r }) => r(o)
   };
-  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = w(({ children: r }) => (V(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
+  return s.after && t.addAfter(s.after), s.before && t.addBefore(s.before), t.Render = V(({ children: r }) => (T(t), r ? r(t.value) : t.value)), t.setValue = async (r) => {
     if (typeof r == "function" && (r = r(t.value)), r !== t.value) {
       t.value = r;
       for (const n of l)
@@ -29,7 +29,7 @@ function h(e, o, s = {}) {
         t.events.forEach((n) => {
           n(t.value);
         });
-      }), !f && e)
+      }), !u && e)
         if (s.saveStorage)
           s.saveStorage(t.value);
         else {
@@ -40,8 +40,8 @@ function h(e, o, s = {}) {
         n();
     }
   }, e && (t.loadStorage = () => {
-    if (!(!e || f || d))
-      if (u = !0, d = !0, s.loadStorage)
+    if (!(!e || u || d))
+      if (f = !0, d = !0, s.loadStorage)
         s.loadStorage(e).then((r) => {
           t.setValue(r);
         });
@@ -54,24 +54,26 @@ function h(e, o, s = {}) {
           } catch {
           }
       }
-  }, u && t.loadStorage()), t;
+  }, e && (f ? t.loadStorage() : setTimeout(() => {
+    t.loadStorage();
+  }, 500))), t;
 }
-function J(e, o) {
+function B(e, o) {
   return h("", e, o);
 }
 const A = [];
-function V(e) {
-  const [o, s] = v(e.value);
-  return S(() => {
+function T(e) {
+  const [o, s] = S(e.value);
+  return v(() => {
     e.events.add(s);
   }, []), g(() => (e.events.add(s), e.loadStorage(), () => {
     e.events.delete(s);
   }), A), [o, e.setValue];
 }
-function N(e) {
+function J(e) {
   const o = () => {
-    if (!f) {
-      if (!u) {
+    if (!u) {
+      if (!f) {
         setTimeout(o);
         return;
       }
@@ -80,17 +82,24 @@ function N(e) {
   };
   o();
 }
-function O({ children: e }) {
+function N({ children: e }) {
   return m(e).current;
 }
-function w(e) {
+function V(e) {
   return R(e, () => !1);
 }
+function O(e) {
+  const o = () => {
+    f ? e() : setTimeout(o, 50);
+  };
+  o();
+}
 export {
-  O as Block,
-  J as atom,
+  N as Block,
+  B as atom,
   h as atomWithStorage,
-  N as onStorageLoaded,
-  w as staticComponent,
-  V as useRerender
+  O as onMount,
+  J as onStorageLoaded,
+  V as staticComponent,
+  T as useRerender
 };

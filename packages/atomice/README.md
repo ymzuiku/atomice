@@ -37,7 +37,7 @@ pnpm i benefits
 
 ### create atom
 
-```jsx
+```tsx
 import { atom } from "atomice";
 
 // global atom
@@ -61,7 +61,7 @@ export default App;
 
 Use `staticComponent` that are never repainted by their parent：
 
-```jsx
+```tsx
 import { atom, staticComponent } from "atomice";
 
 const app = staticComponent(() => {
@@ -234,6 +234,33 @@ import { atomWithStorage } from "atomice";
 const name = atomWithStorage("local-key", "");
 
 function App() {
+  const handleChange = (e) => name.setValue(e.target.value);
+  return (
+    <div>
+      <h1>My React App</h1>
+      <input onChange={handleChange} />
+      your input text: <name.Render />
+    </div>
+  );
+}
+
+export default App;
+```
+
+### onMount
+
+onMount is wait atomWithStorage loaded data:
+
+```tsx
+import { atomWithStorage } from "atomice";
+
+// global atom
+const name = atomWithStorage("local-key", "");
+
+function App() {
+  onMount(() => {
+    cnosole.log(name.value);
+  });
   const handleChange = (e) => name.setValue(e.target.value);
   return (
     <div>

@@ -26,3 +26,4 @@ export declare function Block({ children }: {
     children: ReactNode;
 }): ReactNode;
 export declare function staticComponent<T>(fn: T): T;
+export declare function onMount(fn: () => void): void;

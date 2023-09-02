@@ -138,8 +138,14 @@ export function atomWithStorage<T>(
         }
       }
     };
-    if (rended) {
-      at.loadStorage();
+    if (storageKey) {
+      if (rended) {
+        at.loadStorage();
+      } else {
+        setTimeout(() => {
+          at.loadStorage();
+        }, 500);
+      }
     }
   }
 
@@ -188,4 +194,15 @@ export function Block({ children }: { children: ReactNode }) {
 
 export function staticComponent<T>(fn: T): T {
   return (memo as any)(fn, () => false);
+}
+
+export function onMount(fn: () => void) {
+  const checker = () => {
+    if (rended) {
+      fn();
+    } else {
+      setTimeout(checker, 50);
+    }
+  };
+  checker();
 }
