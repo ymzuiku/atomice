@@ -1,4 +1,3 @@
-import { ChangeEventHandler } from "react";
 import {
   Atom,
   Block,
@@ -6,7 +5,8 @@ import {
   atomWithStorage,
   staticComponent,
   useBlock,
-} from "render-atom";
+} from "atomice";
+import { ChangeEventHandler } from "react";
 
 const name = atomWithStorage("local-state2", "");
 
