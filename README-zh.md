@@ -1,3 +1,5 @@
+<img src="packages/atomice/logo.png" style="margin: 10px auto; text-align:center; height:200px" />
+
 # Atomice
 
 Atomice 的特点是定义了一套基于 Render Props 的解决方案，以避免 Hooks 影响整个组件的渲染。Render Props 是基于 JSX 的特性，具有出色的稳定性和可靠性。
@@ -27,6 +29,10 @@ yarn add benefits
 pnpm i benefits
 
 ## Example
+
+[Example](https://github.com/ymzuiku/atomice/tree/main/packages/example)
+
+## How to use
 
 ### create atom
 

@@ -31,6 +31,10 @@ pnpm i benefits
 
 ## Example
 
+[Example](https://github.com/ymzuiku/atomice/tree/main/packages/example)
+
+## How to use
+
 ### create atom
 
 ```jsx

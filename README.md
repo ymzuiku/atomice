@@ -1,4 +1,4 @@
-<img src="packages/ice-atom/logo.png" style="margin: 10px auto; text-align:center; height:200px" />
+<img src="packages/atomice/logo.png" style="margin: 10px auto; text-align:center; height:200px" />
 
 # Atomice
 
@@ -30,6 +30,10 @@ yarn add benefits
 pnpm i benefits
 
 ## Example
+
+[Example](https://github.com/ymzuiku/atomice/tree/main/packages/example)
+
+## How to use
 
 ### create atom
 
