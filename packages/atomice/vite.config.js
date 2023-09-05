@@ -1,14 +1,13 @@
 import react from "@vitejs/plugin-react";
 import { resolve } from "path";
 import { defineConfig } from "vite";
-
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
   build: {
     lib: {
-      entry: resolve(__dirname, "index.ts"), // 打包的入口文件
-      name: "atomice", // 包名 // formats: ['es', 'umd'], // 打包模式，默认是es和umd都打
+      entry: resolve(__dirname, "index.ts"),
+      name: "atomice",
       fileName: (format) => {
         if (format === "es") {
           return `index.js`;

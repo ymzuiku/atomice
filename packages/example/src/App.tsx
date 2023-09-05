@@ -2,6 +2,7 @@ import {
   Atom,
   Block,
   atom,
+  atomWithComputed,
   atomWithStorage,
   onMount,
   staticComponent,
@@ -23,6 +24,13 @@ const Text = ({ text }: { text: Atom<string> }) => {
 
 const Page = staticComponent(() => {
   const title = atom("");
+  title.listen((value) => {
+    console.log(value);
+  });
+  const bigName = atomWithComputed(
+    () => name.value + title.value + "big",
+    [name, title]
+  );
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     title.setValue(e.target.value);
   };
@@ -51,6 +59,7 @@ const Page = staticComponent(() => {
       <div>
         <title.Render />
         <Text text={title} />
+        <bigName.Render />
       </div>
     </div>
   );

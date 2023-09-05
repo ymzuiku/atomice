@@ -180,9 +180,9 @@ export default App;
 
 > Principle: `const staticComponent = (fn)=> React.memo(fn, ()=>false)`
 
-### useRereder
+### useAtomValue
 
-Sometimes we need to escape precise updates, use `useRerender`:
+Sometimes we need to escape precise updates, use `useAtomValue`:
 
 ```tsx
 import { staticComponent, atom, Atom } from "atomice";
@@ -205,7 +205,7 @@ function App() {
 
 const Text = ({ name }: { name: Atom<string> }) => {
   console.log("render-every-changed");
-  useRerender(name);
+  useAtomValue(name);
   return <p>Your input text: {name.value}</p>;
 };
 
